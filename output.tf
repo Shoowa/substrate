@@ -1,0 +1,125 @@
+output "vpc_id" {
+  value = aws_vpc.ha_net.id
+}
+
+
+output "nacl" {
+  value       = aws_vpc.ha_net.default_network_acl_id
+  description = "ID of network ACL that regulates subnets."
+}
+
+
+output "sg" {
+  value       = aws_vpc.ha_net.default_security_group_id
+  description = "ID of security group that regulates servers."
+}
+
+
+output "route_table" {
+  value       = aws_vpc.ha_net.main_route_table_id
+  description = "Main route table associated with this VPC."
+}
+
+
+output "multi_tenant" {
+  value       = aws_vpc.ha_net.instance_tenancy
+  description = "Tenancy of EC2 Instances permitted on VPC"
+}
+
+
+output "tags" {
+  value       = aws_vpc.ha_net.tags_all
+  description = "A map of tags, including tags inherited from the provider"
+}
+
+
+output "owner" {
+  value       = aws_vpc.ha_net.owner_id
+  description = "AWS account that owns VPC"
+}
+
+
+output "dns_support" {
+  value       = aws_vpc.ha_net.enable_dns_support
+}
+
+
+output "dns_hostnames" {
+  value       = aws_vpc.ha_net.enable_dns_hostnames
+}
+
+
+output "ip6_cidr" {
+  value       = aws_vpc.ha_net.assign_generated_ipv6_cidr_block
+  description = "/56 block provided by AWS."
+}
+
+
+output "app_gateway_id" {
+  value = aws_internet_gateway.app_gateway.id
+  description = "id of internet gateway on vpc."
+}
+
+
+output "app_gateway_owner" {
+  value = aws_internet_gateway.app_gateway.owner_id
+  description = "ID of account that owns internet gateway on VPC."
+}
+
+
+output "app_gateway_tags" {
+  value = aws_internet_gateway.app_gateway.tags_all
+}
+
+
+output "ip6_egress_gateway_id" {
+  value = aws_egress_only_internet_gateway.ip6_egress_gateway.id
+}
+
+
+output "ip6_egress_gateway_tags" {
+  value = aws_egress_only_internet_gateway.ip6_egress_gateway.tags_all
+}
+
+
+output "default_route_table_id" {
+  value = aws_default_route_table.rules.id
+}
+
+
+output "default_route_table_vpc" {
+  value = aws_default_route_table.rules.vpc_id
+}
+
+
+output "default_route_table_tags" {
+  value = aws_default_route_table.rules.tags_all
+}
+
+
+output "private_route_table_association" {
+  value = aws_route_table_association.private.id
+}
+
+
+output "public_route_table_association" {
+  value = aws_route_table_association.public.id
+}
+
+
+output "az_names" {
+  value = data.aws_availability_zones.current.names
+  description = "List of AZs."
+}
+
+
+output "az_region" {
+  value = data.aws_availability_zones.current.id
+  description = "Region of AZs."
+}
+
+
+output "az_id" {
+  value = data.aws_availability_zones.current.zone_ids
+  description = "List of AZ IDs."
+}
