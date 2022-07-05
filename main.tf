@@ -22,10 +22,11 @@ resource "aws_subnet" "public" {
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
   cidr_block          = element(local.web_subnets, each.value)
+  ipv6_cidr_block     = element(local.public_subnets_6, each.value)
 
   tags = {
     Name = "public"
-    ip   = "4"
+    ip   = "dual"
     "kubernetes.io/role/elb" = 1
   }
 }
@@ -55,7 +56,6 @@ resource "aws_subnet" "private_data" {
 
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
-  #cidr_block          = element(local.data_subnets_4, each.value)
   ipv6_cidr_block     = element(local.data_subnets_6, each.value)
 
   tags = {

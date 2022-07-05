@@ -19,12 +19,15 @@ locals {
   ip4_subnets       = cidrsubnets(local.b_class, 4, 4, 4, 8, 8, 8)
   k8s_nodes         = slice(local.ip4_subnets, 0, 3)
   web_subnets       = slice(local.ip4_subnets, 3, 6)
-  #data_subnets_4    = slice(local.ip4_subnets, 6, 9)
-  #cache_subnets_4   = slice(local.ip4_subnets, 9, 12)
 
   # AWS mandates /64 length IP6 addresses, and allows only 256 IP6 subnets.
-  ip6_subnets       = cidrsubnets(aws_vpc.ha_net.ipv6_cidr_block, 8, 8, 8, 8, 8, 8, 8, 8, 8)
+  ip6_subnets       = cidrsubnets(aws_vpc.ha_net.ipv6_cidr_block, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8)
   k8s_pods          = slice(local.ip6_subnets, 0, 3)
   data_subnets_6    = slice(local.ip6_subnets, 3, 6)
   cache_subnets_6   = slice(local.ip6_subnets, 6, 9)
+  public_subnets_6  = slice(local.ip6_subnets, 9, 12)
+
+  # Default ports of AWS components
+  redis_port      = 6379
+  postgres_port   = 5432
 }

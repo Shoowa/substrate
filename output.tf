@@ -194,7 +194,19 @@ output "private_app_association_of_route_tables" {
 }
 
 
-output "sg_tls" {
-  value       = aws_security_group.allow_tls.id
+output "sg_lb_allow_tls" {
+  value       = aws_security_group.lb_allow_tls.id
   description = "ID of server-firewall that enforces TLS."
+}
+
+
+output "sg_postgres" {
+  value       = aws_security_group.postgres.id
+  description = "ID of server-firewall that shields Postgres servers."
+}
+
+
+output "nacl_private_data" {
+  value       = aws_network_acl.private_data.id
+  description = "ID of network-firewall that permits transmission between private-app subnets and private-data subnets."
 }
