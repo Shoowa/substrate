@@ -15,7 +15,7 @@ output "sg" {
 }
 
 
-output "route_table" {
+output "main_route_table" {
   value       = aws_vpc.ha_net.main_route_table_id
   description = "Main route table associated with this VPC."
 }
@@ -50,7 +50,7 @@ output "dns_hostnames" {
 
 
 output "ip6_cidr" {
-  value       = aws_vpc.ha_net.assign_generated_ipv6_cidr_block
+  value       = aws_vpc.ha_net.ipv6_cidr_block
   description = "/56 block provided by AWS."
 }
 
@@ -97,13 +97,13 @@ output "default_route_table_tags" {
 }
 
 
-output "private_route_table_association" {
-  value = aws_route_table_association.private.id
+output "public_route_table_id" {
+  value = aws_route_table.public.id
 }
 
 
-output "public_route_table_association" {
-  value = aws_route_table_association.public.id
+output "public_route_table_associations" {
+  value = values(aws_route_table_association.public).*.id
 }
 
 
@@ -122,4 +122,79 @@ output "az_region" {
 output "az_id" {
   value = data.aws_availability_zones.current.zone_ids
   description = "List of AZ IDs."
+}
+
+
+output "public_subnets" {
+  value = values(aws_subnet.public).*.id
+}
+
+
+output "private_data_subnets" {
+  value = values(aws_subnet.private_data).*.id
+}
+
+
+output "private_app_subnets" {
+  value = values(aws_subnet.private_app).*.id
+}
+
+
+output "eip_IDs" {
+  value = values(aws_eip.nat).*.id
+  description = "IDs of Elastic IP4 addresses assigned to the NAT Gateways."
+}
+
+
+output "eip_IPs" {
+  value = values(aws_eip.nat).*.public_ip
+  description = "IPs assigned to the NAT Gateways."
+}
+
+
+output "nat_gateway_IDs" {
+  value = values(aws_nat_gateway.ec2_to_igw).*.id
+  description = "NAT Gateways residing in different AZs in public subnets."
+}
+
+
+output "nat_gateway_subnets" {
+  value = values(aws_nat_gateway.ec2_to_igw).*.subnet_id
+  description = "Subnets holding the NAT Gateways."
+}
+
+
+output "nat_gateway_EIPs" {
+  value = values(aws_nat_gateway.ec2_to_igw).*.allocation_id
+  description = "Allocation IDs of the Elastic IPs assigned to the NAT Gateways."
+}
+
+
+output "nat_gateway_public_IPs" {
+  value = values(aws_nat_gateway.ec2_to_igw).*.public_ip
+  description = "Public IPs needed to access the NAT Gateways."
+}
+
+
+output "nat_gateway_private_IPs" {
+  value = values(aws_nat_gateway.ec2_to_igw).*.private_ip
+  description = "Private IPs needed to access the NAT Gateways."
+}
+
+
+output "private_app_route_tables" {
+  value = values(aws_route_table.private_app).*.id
+  description = "IDs of the private-app route tables."
+}
+
+
+output "private_app_association_of_route_tables" {
+  value = values(aws_route_table_association.private_app).*.id
+  description = "IDs of the association between a private-app route table and private-app subnets."
+}
+
+
+output "sg_tls" {
+  value       = aws_security_group.allow_tls.id
+  description = "ID of server-firewall that enforces TLS."
 }

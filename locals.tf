@@ -1,24 +1,30 @@
 locals {
 
-  azs           = data.availability_zone.current.names
-  az1           = element(data.availability_zone.current.names, 0)
-  az2           = element(data.availability_zone.current.names, 1)
-  az3           = element(data.availability_zone.current.names, 2)
+  azs           = data.aws_availability_zones.current.names
+
+  # We need a map and an index, so we can pair each AZ with a subnet.
+  # The key is an AZ, and the value is an integer. So we can pair all 3 AZs with
+  # all 3 data_subnets, all 3 web_subnets, etc using the TF for_each construct.
+  map_az_index  = {for i, az in local.azs: az => i}
 
   zero_ip4      = "0.0.0.0/0"
   zero_ip6      = "::/0"
   b_class       = "10.0.0.0/16" # 65,536 addresses
 
-  # First 3 groups each have 4,094 addresses, because /16 + 4 = /20.
-  # Next six groups each have 1,022 addresses, because /16 + 6 = /22.
   # Add arguments to the cidrsubnets() function, but don't erase or replace arguments.
-  ip4_subnets   = cidrsubnets(local.b_class, 4, 4, 4, 6, 6, 6, 6, 6, 6)
-  ip6_subnets   = cidrsubnets(aws_vpc.ha_net.ipv6_cidr_block, 8, 8, 8)
+  # End-index is excluded in SLICE(), so only 0, 1, 2 read in first entry.
 
-  # End-index is excluded, so only 0, 1, 2 read in first entry.
-  k8s_nodes     = slice(local.ip4_subnets, 0, 3)
-  k8s_pods      = slice(local.ip6_subnets, 0, 3)
-  data_subnets  = slice(local.ip4_subnets, 3, 6)
-  web_subnets   = slice(local.ip4_subnets, 6, 9)
+  # First 3 each have 4,094 addresses, because /16 + 4 = /20
+  # Next 3 each have 254 addresses, because /16 + 8 = /24
+  ip4_subnets       = cidrsubnets(local.b_class, 4, 4, 4, 8, 8, 8)
+  k8s_nodes         = slice(local.ip4_subnets, 0, 3)
+  web_subnets       = slice(local.ip4_subnets, 3, 6)
+  #data_subnets_4    = slice(local.ip4_subnets, 6, 9)
+  #cache_subnets_4   = slice(local.ip4_subnets, 9, 12)
 
+  # AWS mandates /64 length IP6 addresses, and allows only 256 IP6 subnets.
+  ip6_subnets       = cidrsubnets(aws_vpc.ha_net.ipv6_cidr_block, 8, 8, 8, 8, 8, 8, 8, 8, 8)
+  k8s_pods          = slice(local.ip6_subnets, 0, 3)
+  data_subnets_6    = slice(local.ip6_subnets, 3, 6)
+  cache_subnets_6   = slice(local.ip6_subnets, 6, 9)
 }
