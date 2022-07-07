@@ -340,3 +340,81 @@ resource "aws_network_acl" "private_app" {
     aws_subnet.private_cache
   ]
 }
+
+
+resource "aws_network_acl" "private_cache" {
+  vpc_id              = aws_vpc.ha_net.id
+  subnet_ids          = [for subnet in aws_subnet.private_cache: subnet.id]
+
+  # Redis
+  ingress {
+    protocol          = "tcp"
+    rule_no           = 10
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 0)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+  # Allow response destined for K8S Pods.
+  egress {
+    protocol          = "tcp"
+    rule_no           = 20
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 0)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+  # Redis
+  ingress {
+    protocol          = "tcp"
+    rule_no           = 11
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 1)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+  # Allow response destined for K8S Pods.
+  egress {
+    protocol          = "tcp"
+    rule_no           = 21
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 1)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+
+  # Redis
+  ingress {
+    protocol          = "tcp"
+    rule_no           = 12
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 2)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+  # Allow response destined for K8S Pods.
+  egress {
+    protocol          = "tcp"
+    rule_no           = 22
+    action            = "allow"
+    ipv6_cidr_block   = element(local.k8s_pods, 2)
+    from_port         = local.redis_port
+    to_port           = local.redis_port
+  }
+
+  tags                = {
+    Name              = "private-cache"
+  }
+
+  # This resource truly depends on the VPC creating an IP6 CIDR Block,
+  # and the two listed dependencies serve as adequate proxies for that attribute.
+  depends_on          = [
+    aws_subnet.private_cache,
+    aws_subnet.private_app
+  ]
+}

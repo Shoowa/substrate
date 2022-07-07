@@ -91,7 +91,7 @@ resource "aws_subnet" "private_cache" {
 resource "aws_db_subnet_group" "private_data" {
   name          = "private-data"
   description   = "Separate set of subnets for PostgreSQL."
-  subnet_ids    = [for subnet in aws_subnet.private_data: subnet.id]
+  subnet_ids    = values(aws_subnet.private_data).*.id
 
   depends_on    = [aws_subnet.private_data]
 }
@@ -100,7 +100,7 @@ resource "aws_db_subnet_group" "private_data" {
 resource "aws_elasticache_subnet_group" "private_cache" {
   name          = "private-cache"
   description   = "Separate set of subnets for Redis and Memcache."
-  subnet_ids    = [for subnet in aws_subnet.private_cache: subnet.id]
+  subnet_ids    = values(aws_subnet.private_cache).*.id
 
 
   depends_on    = [aws_subnet.private_cache]
