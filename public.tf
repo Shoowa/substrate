@@ -18,7 +18,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "routes"
+    Name = "public-routes"
     type = "public"
   }
 }
@@ -41,6 +41,12 @@ resource "aws_eip" "nat" {
 
   vpc         = true
 
+  tags      = {
+    Name    = "eip"
+    region  = "${each.key}"
+    type    = "public"
+  }
+
   depends_on  = [aws_internet_gateway.app_gateway]
 }
 
@@ -53,7 +59,7 @@ resource "aws_nat_gateway" "ec2_to_igw" {
   subnet_id       = aws_subnet.public[each.key].id
 
   tags = {
-    Name = "nat"
+    Name = "nat-${each.key}"
     type = "public"
   }
 

@@ -22,7 +22,7 @@ resource "aws_security_group" "lb_allow_tls" {
   }
 
   tags = {
-    Name = "sg_lb_tls"
+    Name = "lb_tls"
   }
 
   # This resource truly depends on the VPC creating an IP6 CIDR Block,
@@ -47,7 +47,7 @@ resource "aws_security_group" "postgres" {
   }
 
   tags = {
-    Name = "sg_postgres"
+    Name = "postgres"
   }
 
   # This resource truly depends on the VPC creating an IP6 CIDR Block,

@@ -25,7 +25,7 @@ resource "aws_subnet" "public" {
   ipv6_cidr_block     = element(local.public_subnets_6, each.value)
 
   tags = {
-    Name = "public"
+    Name = "public-${each.key}"
     ip   = "dual"
     "kubernetes.io/role/elb" = 1
   }
@@ -41,10 +41,11 @@ resource "aws_subnet" "private_app" {
   cidr_block          = element(local.k8s_nodes, each.value)
   ipv6_cidr_block     = element(local.k8s_pods, each.value)
 
-  assign_ipv6_address_on_creation = true
+  assign_ipv6_address_on_creation                 = true
+  enable_resource_name_dns_aaaa_record_on_launch  = true
 
   tags = {
-    Name  = "app"
+    Name  = "app-${each.key}"
     ip    = "dual"
   }
 }
@@ -57,9 +58,13 @@ resource "aws_subnet" "private_data" {
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
   ipv6_cidr_block     = element(local.data_subnets_6, each.value)
+  ipv6_native         = true
+
+  assign_ipv6_address_on_creation                 = true
+  enable_resource_name_dns_aaaa_record_on_launch  = true
 
   tags = {
-    Name  = "data"
+    Name  = "data-${each.key}"
     ip    = "6"
   }
 }
@@ -72,9 +77,12 @@ resource "aws_subnet" "private_cache" {
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
   ipv6_cidr_block     = element(local.cache_subnets_6, each.value)
+  ipv6_native         = true
+
+  assign_ipv6_address_on_creation = true
 
   tags = {
-    Name = "cache"
+    Name = "cache-${each.key}"
     ip   = "6"
   }
 }
@@ -89,8 +97,8 @@ resource "aws_db_subnet_group" "private_data" {
 }
 
 
-resource "aws_elasticache_subnet_group" "cache" {
-  name          = "cache"
+resource "aws_elasticache_subnet_group" "private_cache" {
+  name          = "private-cache"
   description   = "Separate set of subnets for Redis and Memcache."
   subnet_ids    = [for subnet in aws_subnet.private_cache: subnet.id]
 
@@ -145,7 +153,7 @@ resource "aws_route_table" "private_app" {
   }
 
   tags = {
-    Name = "routes"
+    Name = "private-app-${each.key}"
     type = "private-app"
   }
 
@@ -164,9 +172,3 @@ resource "aws_route_table_association" "private_app" {
     aws_route_table.private_app
   ]
 }
-
-
-# Route from App subnet to Database subnet?
-
-
-# VPC gate to S3? Route to S3?
