@@ -210,3 +210,60 @@ output "nacl_private_data" {
   value       = aws_network_acl.private_data.id
   description = "ID of network-firewall that permits transmission between private-app subnets and private-data subnets."
 }
+
+
+output "s3_endpoint_id" {
+  value = aws_vpc_endpoint.s3.id
+}
+
+
+output "s3_endpoint_dns" {
+  value = aws_vpc_endpoint.s3.dns_entry
+}
+
+
+output "s3_endpoint_owner_id" {
+  value = aws_vpc_endpoint.s3.owner_id
+}
+
+output "ecr_endpoint_id" {
+  value = aws_vpc_endpoint.ecr.id
+}
+
+
+output "ecr_endpoint_dns" {
+  value = aws_vpc_endpoint.ecr.dns_entry
+}
+
+
+output "ecr_owner_id" {
+  value = aws_vpc_endpoint.ecr.owner_id
+}
+
+output "sqs_endpoint_id" {
+  value = aws_vpc_endpoint.sqs.id
+}
+
+
+output "sqs_endpoint_dns" {
+  value = aws_vpc_endpoint.sqs.dns_entry
+}
+
+
+output "sqs_owner_id" {
+  value = aws_vpc_endpoint.sqs.owner_id
+}
+
+output "dynamo_endpoint_id" {
+  value = aws_vpc_endpoint.dynamo.id
+}
+
+
+output "dynamo_endpoint_dns" {
+  value = aws_vpc_endpoint.dynamo.dns_entry
+}
+
+
+output "dynamo_owner_id" {
+  value = aws_vpc_endpoint.dynamo.owner_id
+}

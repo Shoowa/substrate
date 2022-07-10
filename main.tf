@@ -2,8 +2,8 @@ resource "aws_vpc" "ha_net" {
   cidr_block = local.b_class
 
   # Both enabled to permit nodes to register with an EKS cluster.
-  enable_dns_support    = true
   enable_dns_hostnames  = true
+  enable_dns_support    = true # DNS Resolution enabled.
 
   instance_tenancy      = "default" # VM shared on a host.
 
