@@ -10,3 +10,9 @@ variable "region" {
   description = "Name of AWS region"
   default     = "us-east-2"
 }
+
+
+variable "corp" {
+  type        = string
+  description = "Name of the corporation"
+}

@@ -254,6 +254,7 @@ output "sqs_owner_id" {
   value = aws_vpc_endpoint.sqs.owner_id
 }
 
+
 output "dynamo_endpoint_id" {
   value = aws_vpc_endpoint.dynamo.id
 }
@@ -266,4 +267,39 @@ output "dynamo_endpoint_dns" {
 
 output "dynamo_owner_id" {
   value = aws_vpc_endpoint.dynamo.owner_id
+}
+
+
+output "s3_ID_holding_vpc_flow_logs" {
+  value = aws_s3_bucket.vpc_flow_log.id
+}
+
+
+output "vpc_flow_logs_ID" {
+  value = aws_flow_log.vpc.id
+}
+
+
+output "s3_IDs_holding_private_data_flow_logs" {
+  value = values(aws_s3_bucket.private_data_flow_log).*.id
+}
+
+
+output "private_data_flow_logs_IDs" {
+  value = values(aws_flow_log.private_data).*.id
+}
+
+
+output "account_ID" {
+  value = data.aws_caller_identity.requestor.account_id
+}
+
+
+output "account_ARN" {
+  value = data.aws_caller_identity.requestor.arn
+}
+
+
+output "user_ID" {
+  value = data.aws_caller_identity.requestor.user_id
 }

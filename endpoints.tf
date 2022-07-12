@@ -4,6 +4,7 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = values(aws_subnet.private_app).*.id
+  security_group_ids  = [aws_security_group.endpoints.id]
 
   tags = {
     Name = "endpoint-s3"
@@ -17,6 +18,7 @@ resource "aws_vpc_endpoint" "ecr" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = values(aws_subnet.private_app).*.id
+  security_group_ids  = [aws_security_group.endpoints.id]
 
   tags = {
     Name = "endpoint-ecr"
@@ -30,6 +32,7 @@ resource "aws_vpc_endpoint" "sqs" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = values(aws_subnet.private_app).*.id
+  security_group_ids  = [aws_security_group.endpoints.id]
 
   tags = {
     Name = "endpoint-sqs"
@@ -43,6 +46,7 @@ resource "aws_vpc_endpoint" "dynamo" {
   vpc_endpoint_type   = "Interface"
   private_dns_enabled = true
   subnet_ids          = values(aws_subnet.private_app).*.id
+  security_group_ids  = [aws_security_group.endpoints.id]
 
   tags = {
     Name = "endpoint-dynamo"

@@ -21,7 +21,7 @@ resource "aws_subnet" "public" {
 
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
-  cidr_block          = element(local.web_subnets, each.value)
+  cidr_block          = element(local.web_subnets_4, each.value)
   ipv6_cidr_block     = element(local.public_subnets_6, each.value)
 
   tags = {
@@ -57,8 +57,8 @@ resource "aws_subnet" "private_data" {
 
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
+  cidr_block          = element(local.data_subnets_4, each.value)
   ipv6_cidr_block     = element(local.data_subnets_6, each.value)
-  ipv6_native         = true
 
   assign_ipv6_address_on_creation                 = true
   enable_resource_name_dns_aaaa_record_on_launch  = true
@@ -76,10 +76,11 @@ resource "aws_subnet" "private_cache" {
 
   vpc_id              = aws_vpc.ha_net.id
   availability_zone   = each.key
+  cidr_block          = element(local.cache_subnets_4, each.value)
   ipv6_cidr_block     = element(local.cache_subnets_6, each.value)
-  ipv6_native         = true
 
   assign_ipv6_address_on_creation = true
+  enable_resource_name_dns_aaaa_record_on_launch  = true
 
   tags = {
     Name = "cache-${each.key}"

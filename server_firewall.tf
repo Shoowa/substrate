@@ -17,8 +17,12 @@ resource "aws_security_group" "lb_allow_tls" {
     from_port         = 1024
     to_port           = 65535
     protocol          = "tcp"
-    cidr_blocks       = [for subnet in local.k8s_nodes: subnet]
-    ipv6_cidr_blocks  = [for subnet in local.k8s_pods: subnet]
+    cidr_blocks       = local.k8s_nodes
+    ipv6_cidr_blocks  = local.k8s_pods
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tags = {
@@ -43,11 +47,42 @@ resource "aws_security_group" "postgres" {
     from_port         = 5432
     to_port           = 5432
     protocol          = "tcp"
-    ipv6_cidr_blocks  = [for subnet in local.k8s_pods: subnet]
+    ipv6_cidr_blocks  = local.k8s_pods
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 
   tags = {
     Name = "postgres"
+  }
+
+  # This resource truly depends on the VPC creating an IP6 CIDR Block,
+  # and the listed dependency serves as an adequate proxy for that attribute.
+  depends_on = [aws_subnet.private_app]
+}
+
+
+resource "aws_security_group" "endpoints" {
+  vpc_id              = aws_vpc.ha_net.id
+  name                = "endpoints"
+  description         = "Allow endpoints to receive requests from private-app subnets."
+
+  # Rules are stateful, so a response is allowed for secure inbound requests.
+  ingress {
+    from_port         = 32768
+    to_port           = 61000
+    protocol          = "tcp"
+    ipv6_cidr_blocks  = local.k8s_pods
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "endpoints-inbound"
   }
 
   # This resource truly depends on the VPC creating an IP6 CIDR Block,

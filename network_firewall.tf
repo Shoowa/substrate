@@ -3,7 +3,7 @@
 # Many Linux kernels use ports 32768-61000.
 resource "aws_network_acl" "private_data" {
   vpc_id              = aws_vpc.ha_net.id
-  subnet_ids          = [for subnet in aws_subnet.private_data: subnet.id]
+  subnet_ids          = values(aws_subnet.private_data).*.id
 
   # Postgres
   ingress {
@@ -83,7 +83,7 @@ resource "aws_network_acl" "private_data" {
 # and delivers requests to Private Data & Private Cache.
 resource "aws_network_acl" "private_app" {
   vpc_id              = aws_vpc.ha_net.id
-  subnet_ids          = [for subnet in aws_subnet.private_app: subnet.id]
+  subnet_ids          = values(aws_subnet.private_app).*.id
 
 
   # Requests from IP6 LB
@@ -151,7 +151,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 100
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 0)
+    cidr_block        = element(local.web_subnets_4, 0)
     from_port         = 1024
     to_port           = 65535
   }
@@ -161,7 +161,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 200
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 0)
+    cidr_block        = element(local.web_subnets_4, 0)
     from_port         = 1024
     to_port           = 65535
   }
@@ -171,7 +171,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 101
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 1)
+    cidr_block        = element(local.web_subnets_4, 1)
     from_port         = 1024
     to_port           = 65535
   }
@@ -181,7 +181,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 201
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 1)
+    cidr_block        = element(local.web_subnets_4, 1)
     from_port         = 1024
     to_port           = 65535
   }
@@ -191,7 +191,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 102
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 2)
+    cidr_block        = element(local.web_subnets_4, 2)
     from_port         = 1024
     to_port           = 65535
   }
@@ -201,7 +201,7 @@ resource "aws_network_acl" "private_app" {
     protocol          = "tcp"
     rule_no           = 202
     action            = "allow"
-    cidr_block        = element(local.web_subnets, 2)
+    cidr_block        = element(local.web_subnets_4, 2)
     from_port         = 1024
     to_port           = 65535
   }
@@ -344,7 +344,7 @@ resource "aws_network_acl" "private_app" {
 
 resource "aws_network_acl" "private_cache" {
   vpc_id              = aws_vpc.ha_net.id
-  subnet_ids          = [for subnet in aws_subnet.private_cache: subnet.id]
+  subnet_ids          = values(aws_subnet.private_cache).*.id
 
   # Redis
   ingress {
