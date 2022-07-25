@@ -43,9 +43,9 @@ resource "aws_security_group" "postgres" {
 
   # Rules are stateful, so a response is allowed for secure inbound requests.
   ingress {
-    description       = "TLS from VPC."
-    from_port         = 5432
-    to_port           = 5432
+    description       = "Allow K8S pods to contact Postgres."
+    from_port         = local.postgres_port
+    to_port           = local.postgres_port
     protocol          = "tcp"
     ipv6_cidr_blocks  = local.k8s_pods
   }
@@ -85,8 +85,37 @@ resource "aws_security_group" "endpoints" {
   tags = {
     Name = "endpoints-inbound"
   }
+}
 
-  # This resource truly depends on the VPC creating an IP6 CIDR Block,
-  # and the listed dependency serves as an adequate proxy for that attribute.
-  depends_on = [aws_subnet.private_app]
+
+resource "aws_security_group" "cred_rotation_lambda" {
+  vpc_id        = aws_vpc.ha_net.id
+  name          = "allow-cred-rotation"
+  description   = "Allow Lambda func to contact both RDS & SM Endpoint."
+
+  egress {
+    description       = "Lambda to RDS"
+    from_port         = local.postgres_port
+    to_port           = local.postgres_port
+    protocol          = "tcp"
+    cidr_blocks       = local.data_subnets_4
+    ipv6_cidr_blocks  = local.data_subnets_6
+  }
+
+  egress {
+    description       = "Lambda to Endpoint Secrets Manager."
+    from_port         = 443
+    to_port           = 443
+    protocol          = "tcp"
+    cidr_blocks       = [local.zero_ip4]
+    ipv6_cidr_blocks  = [local.zero_ip6]
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tags = {
+    Name = "firewall-lambda"
+  }
 }
