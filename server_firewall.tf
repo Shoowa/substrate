@@ -71,10 +71,11 @@ resource "aws_security_group" "endpoints" {
 
   # Rules are stateful, so a response is allowed for secure inbound requests.
   ingress {
-    from_port         = 32768
-    to_port           = 61000
+    from_port         = 443
+    to_port           = 443
     protocol          = "tcp"
-    ipv6_cidr_blocks  = local.k8s_pods
+    cidr_blocks       = [local.zero_ip4]
+    ipv6_cidr_blocks  = [local.zero_ip6]
   }
 
   lifecycle {
