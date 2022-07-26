@@ -213,60 +213,31 @@ output "nacl_private_data" {
 
 
 output "s3_endpoint_id" {
-  value = aws_vpc_endpoint.s3.id
+  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.id : null
 }
 
 
 output "s3_endpoint_dns" {
-  value = aws_vpc_endpoint.s3.dns_entry
+  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.dns_entry : null
 }
 
 
 output "s3_endpoint_owner_id" {
-  value = aws_vpc_endpoint.s3.owner_id
+  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.owner_id : null
 }
 
 output "ecr_endpoint_id" {
-  value = aws_vpc_endpoint.ecr.id
+  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.id : null
 }
 
 
 output "ecr_endpoint_dns" {
-  value = aws_vpc_endpoint.ecr.dns_entry
+  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.dns_entry : null
 }
 
 
 output "ecr_owner_id" {
-  value = aws_vpc_endpoint.ecr.owner_id
-}
-
-output "sqs_endpoint_id" {
-  value = aws_vpc_endpoint.sqs.id
-}
-
-
-output "sqs_endpoint_dns" {
-  value = aws_vpc_endpoint.sqs.dns_entry
-}
-
-
-output "sqs_owner_id" {
-  value = aws_vpc_endpoint.sqs.owner_id
-}
-
-
-output "dynamo_endpoint_id" {
-  value = aws_vpc_endpoint.dynamo.id
-}
-
-
-output "dynamo_endpoint_dns" {
-  value = aws_vpc_endpoint.dynamo.dns_entry
-}
-
-
-output "dynamo_owner_id" {
-  value = aws_vpc_endpoint.dynamo.owner_id
+  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.owner_id : null
 }
 
 
