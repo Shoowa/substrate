@@ -274,3 +274,8 @@ output "account_ARN" {
 output "user_ID" {
   value = data.aws_caller_identity.requestor.user_id
 }
+
+
+output "db_subnet_private_data" {
+  value = aws_db_subnet_group.private_data.id
+}
