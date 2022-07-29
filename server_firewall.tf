@@ -99,7 +99,6 @@ resource "aws_security_group" "cred_rotation_lambda" {
     to_port           = local.postgres_port
     protocol          = "tcp"
     cidr_blocks       = local.data_subnets_4
-    ipv6_cidr_blocks  = local.data_subnets_6
   }
 
   egress {
@@ -108,7 +107,6 @@ resource "aws_security_group" "cred_rotation_lambda" {
     to_port           = 443
     protocol          = "tcp"
     cidr_blocks       = [local.zero_ip4]
-    ipv6_cidr_blocks  = [local.zero_ip6]
   }
 
   lifecycle {

@@ -279,3 +279,13 @@ output "user_ID" {
 output "db_subnet_private_data" {
   value = aws_db_subnet_group.private_data.id
 }
+
+
+output "secrets_manager_endpoint_id" {
+  value = aws_vpc_endpoint.secrets.*.id
+}
+
+
+output "secrets_manager_endpoint_nii" {
+  value = aws_vpc_endpoint.secrets.*.network_interface_ids
+}
