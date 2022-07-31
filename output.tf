@@ -213,31 +213,31 @@ output "nacl_private_data" {
 
 
 output "s3_endpoint_id" {
-  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.id : null
+  value = aws_vpc_endpoint.s3.*.id
 }
 
 
 output "s3_endpoint_dns" {
-  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.dns_entry : null
+  value = aws_vpc_endpoint.s3.*.dns_entry
 }
 
 
 output "s3_endpoint_owner_id" {
-  value = var.endpoint_s3 ? aws_vpc_endpoint.s3.0.owner_id : null
+  value = aws_vpc_endpoint.s3.*.owner_id
 }
 
 output "ecr_endpoint_id" {
-  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.id : null
+  value = aws_vpc_endpoint.ecr.*.id
 }
 
 
 output "ecr_endpoint_dns" {
-  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.dns_entry : null
+  value = aws_vpc_endpoint.ecr.*.dns_entry
 }
 
 
 output "ecr_owner_id" {
-  value = var.endpoint_ecr ? aws_vpc_endpoint.ecr.0.owner_id : null
+  value = aws_vpc_endpoint.ecr.*.owner_id
 }
 
 
@@ -288,4 +288,9 @@ output "secrets_manager_endpoint_id" {
 
 output "secrets_manager_endpoint_nii" {
   value = aws_vpc_endpoint.secrets.*.network_interface_ids
+}
+
+
+output "secrets_manager_endpoint_dns" {
+  value = aws_vpc_endpoint.secrets.*.dns_entry
 }
