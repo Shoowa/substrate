@@ -65,7 +65,7 @@ resource "aws_vpc_endpoint" "secrets" {
   vpc_id              = aws_vpc.ha_net.id
   service_name        = "com.amazonaws.${var.region}.secretsmanager"
   vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
+  private_dns_enabled = false
   auto_accept         = true
   security_group_ids  = [aws_security_group.endpoints.id]
   subnet_ids          = values(aws_subnet.private_data).*.id
