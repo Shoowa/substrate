@@ -62,6 +62,7 @@ resource "aws_subnet" "private_data" {
 
   assign_ipv6_address_on_creation                 = true
   enable_resource_name_dns_aaaa_record_on_launch  = true
+  enable_resource_name_dns_a_record_on_launch     = true
 
   tags = {
     Name  = "data-${each.key}"
