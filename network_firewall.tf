@@ -66,21 +66,20 @@ resource "aws_network_acl" "private_data" {
     to_port           = local.postgres_port
   }
 
-
-  # Lambda ports
+  # VPC Endpoint
   ingress {
     protocol          = "tcp"
-    rule_no           = 100
+    rule_no           = 200
     action            = "allow"
     cidr_block        = local.zero_ip4
-    from_port         = 1024
-    to_port           = 65535
+    from_port         = 443
+    to_port           = 443
   }
 
   # VPC Endpoint
   egress {
     protocol          = "tcp"
-    rule_no           = 200
+    rule_no           = 210
     action            = "allow"
     cidr_block        = local.zero_ip4
     from_port         = 443
