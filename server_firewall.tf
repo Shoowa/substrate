@@ -47,6 +47,7 @@ resource "aws_security_group" "postgres" {
     from_port         = local.postgres_port
     to_port           = local.postgres_port
     protocol          = "tcp"
+    cidr_blocks       = local.data_subnets_4
     ipv6_cidr_blocks  = local.k8s_pods
   }
 
