@@ -86,6 +86,26 @@ resource "aws_network_acl" "private_data" {
     to_port           = 443
   }
 
+  # Lambda
+  ingress {
+    protocol          = "tcp"
+    rule_no           = 300
+    action            = "allow"
+    cidr_block        = local.zero_ip4
+    from_port         = 1024
+    to_port           = 65535
+  }
+
+  # Lambda
+  egress {
+    protocol          = "tcp"
+    rule_no           = 310
+    action            = "allow"
+    cidr_block        = local.zero_ip4
+    from_port         = 1024
+    to_port           = 65535
+  }
+
   tags                = {
     Name              = "private-data"
   }
