@@ -18,6 +18,12 @@ variable "corp" {
 }
 
 
+variable "cluster_name" {
+  type        = string
+  description = "Name of the future EKS cluster."
+}
+
+
 variable "endpoint_s3" {
   type        = bool
   description = "Toggle VPC Endpoint for S3 service."

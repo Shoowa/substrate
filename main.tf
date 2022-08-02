@@ -47,6 +47,7 @@ resource "aws_subnet" "private_app" {
   tags = {
     Name  = "app-${each.key}"
     ip    = "dual"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
