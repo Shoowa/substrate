@@ -301,3 +301,33 @@ output "secrets_manager_endpoint_nii" {
 output "secrets_manager_endpoint_dns" {
   value = aws_vpc_endpoint.secrets.*.dns_entry
 }
+
+
+output "secrets_manager_endpoint_dns_name" {
+  value = join("", aws_vpc_endpoint.secrets.*.dns_entry.0.dns_name)
+}
+
+
+output "zone" {
+  value = aws_route53_zone.main.zone_id
+}
+
+
+output "subdomain" {
+  value = aws_route53_zone.employee.zone_id
+}
+
+
+output "personnel_subdomain_name" {
+  value = aws_route53_record.employee_entrance.name
+}
+
+
+output "personnel_fqdn" {
+  value = aws_route53_record.employee_entrance.fqdn
+}
+
+
+output "sg_bastion" {
+  value = module.bastion.bastion_host_security_group
+}

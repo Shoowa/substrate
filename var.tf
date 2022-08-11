@@ -57,3 +57,9 @@ variable "endpoint_secrets" {
   description = "Toggle VPC Endpoint for Secrets Manager service."
   default     = false
 }
+
+
+variable "dns_name" {
+  type        = string
+  description = "Name of the domain."
+}

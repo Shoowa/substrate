@@ -51,6 +51,14 @@ resource "aws_security_group" "postgres" {
     ipv6_cidr_blocks  = local.k8s_pods
   }
 
+  ingress {
+    description       = "Allow Bastion to contact database."
+    from_port         = local.postgres_port
+    to_port           = local.postgres_port
+    protocol          = "tcp"
+    security_groups   = [module.bastion.bastion_host_security_group.0]
+  }
+
   lifecycle {
     create_before_destroy = true
   }

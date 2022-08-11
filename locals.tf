@@ -2,6 +2,8 @@ locals {
 
   account       = data.aws_caller_identity.requestor.account_id
   azs           = data.aws_availability_zones.current.names
+  uniq          = "${var.corp}-${var.environ}-${var.region}"
+  bastion       = "bastion-${local.uniq}"
 
   # We need a map and an index, so we can pair each AZ with a subnet.
   # The key is an AZ, and the value is an integer. So we can pair all 3 AZs with
