@@ -206,6 +206,18 @@ output "sg_postgres" {
 }
 
 
+output "sg_endpoints" {
+  value       = aws_security_group.endpoints.id
+  description = "ID of server-firewall that VPC Endpoints."
+}
+
+
+output "sg_cred_rotation_lambda" {
+  value       = aws_security_group.cred_rotation_lambda.id
+  description = "ID of server-firewall that shields Lambda ENI inside VPC."
+}
+
+
 output "nacl_private_data" {
   value       = aws_network_acl.private_data.id
   description = "ID of network-firewall that permits transmission between private-app subnets and private-data subnets."
