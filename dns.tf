@@ -1,6 +1,5 @@
-resource "aws_route53_zone" "main" {
-  name          = var.dns_name
-  force_destroy = true
+data "aws_route53_zone" "main" {
+  name = var.dns_name
 }
 
 
@@ -11,7 +10,7 @@ resource "aws_route53_zone" "employee" {
 
 
 resource "aws_route53_record" "employee_entrance" {
-  zone_id = aws_route53_zone.main.zone_id
+  zone_id = data.aws_route53_zone.main.zone_id
   type    = "NS"
   ttl     = "30"
   name    = aws_route53_zone.employee.name

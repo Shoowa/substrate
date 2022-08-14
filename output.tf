@@ -308,11 +308,6 @@ output "secrets_manager_endpoint_dns_name" {
 }
 
 
-output "zone" {
-  value = aws_route53_zone.main.zone_id
-}
-
-
 output "subdomain" {
   value = aws_route53_zone.employee.zone_id
 }
