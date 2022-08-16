@@ -7,3 +7,8 @@ data "aws_availability_zones" "current" {
 
 
 data "aws_caller_identity" "requestor" {}
+
+
+data "aws_iam_role" "bucket_master" {
+  name = var.bastion_bucket_master
+}

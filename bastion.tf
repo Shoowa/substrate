@@ -21,3 +21,28 @@ module "bastion" {
     description = "FOSS bastion."
   }
 }
+
+
+data "aws_iam_policy_document" "who_can_access_bastion_bucket" {
+  statement {
+    sid         = "CanAccessBastionBucket"
+    actions     = ["s3:*"]
+    effect      = "Allow"
+
+    resources   = [
+      module.bastion.aws_s3_bucket.bucket.arn,
+      "${module.bastion.aws_s3_bucket.bucket.arn}/*"
+     ]
+
+     principals {
+       type = "AWS"
+       identifiers = [data.aws_iam_role.bucket_master.arn]
+     }
+  }
+}
+
+
+resource "aws_s3_bucket_policy" "access" {
+  bucket = module.bastion.aws_s3_bucket.bucket.id
+  policy = data.aws_iam_policy_document.who_can_access_bastion_bucket.json
+}

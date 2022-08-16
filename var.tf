@@ -63,3 +63,9 @@ variable "dns_name" {
   type        = string
   description = "Name of the domain."
 }
+
+
+variable "bastion_bucket_master" {
+  type        = string
+  description = "Name of existing IAM Role that will be allowed to read Bastion bucket holding SSH keys."
+}
