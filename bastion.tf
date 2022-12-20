@@ -10,6 +10,7 @@ module "bastion" {
   vpc_id                  = aws_vpc.ha_net.id
 
   bucket_name             = local.bastion
+  bucket_force_destroy    = true
   bastion_host_key_pair   = data.aws_key_pair.bastion.key_name
   bastion_iam_policy_name = local.bastion
 
