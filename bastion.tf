@@ -1,3 +1,8 @@
+data "aws_key_pair" "bastion" {
+  key_name            = local.bastion
+  include_public_key  = true
+}
+
 module "bastion" {
   source    = "git@github.com:Guimove/terraform-aws-bastion.git?ref=master"
 
@@ -5,7 +10,7 @@ module "bastion" {
   vpc_id                  = aws_vpc.ha_net.id
 
   bucket_name             = local.bastion
-  bastion_host_key_pair   = local.bastion
+  bastion_host_key_pair   = data.aws_key_pair.bastion.key_name
   bastion_iam_policy_name = local.bastion
 
   create_dns_record       = true
