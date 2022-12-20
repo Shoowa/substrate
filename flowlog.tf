@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "vpc_flow_log" {
   bucket  = "flowlogs-vpc-${var.region}-${var.environ}-${var.corp}"
 
+  force_destroy = true
   tags    = {
     Name  = "flowlogs-vpc-${var.region}-${var.environ}-${var.corp}"
   }
@@ -56,6 +57,7 @@ resource "aws_s3_bucket" "private_data_flow_log" {
   for_each  = local.map_az_index
   bucket    = "flowlogs-private-data-${each.key}-${var.environ}-${var.corp}"
 
+  force_destroy = true
   tags      = {
     Name    = "flowlogs-private-data-${each.key}-${var.environ}-${var.corp}"
   }
