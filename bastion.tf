@@ -1,5 +1,5 @@
 module "bastion" {
-  source    = "git@github.com:Guimove/terraform-aws-bastion.git?ref=v3.0.2"
+  source    = "git@github.com:Guimove/terraform-aws-bastion.git?ref=master"
 
   region                  = data.aws_region.current.name
   vpc_id                  = aws_vpc.ha_net.id
@@ -30,8 +30,8 @@ data "aws_iam_policy_document" "who_can_access_bastion_bucket" {
     effect      = "Allow"
 
     resources   = [
-      module.bastion.aws_s3_bucket.bucket.arn,
-      "${module.bastion.aws_s3_bucket.bucket.arn}/*"
+      module.bastion.bucket_arn,
+      "${module.bastion.bucket_arn}/*"
      ]
 
      principals {
@@ -43,6 +43,6 @@ data "aws_iam_policy_document" "who_can_access_bastion_bucket" {
 
 
 resource "aws_s3_bucket_policy" "access" {
-  bucket = module.bastion.aws_s3_bucket.bucket.id
+  bucket = module.bastion.bucket_name
   policy = data.aws_iam_policy_document.who_can_access_bastion_bucket.json
 }
