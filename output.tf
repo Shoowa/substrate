@@ -140,6 +140,11 @@ output "private_app_subnets" {
 }
 
 
+output "private_cache_subnets" {
+  value = values(aws_subnet.private_cache).*.id
+}
+
+
 output "eip_IDs" {
   value = values(aws_eip.nat).*.id
   description = "IDs of Elastic IP4 addresses assigned to the NAT Gateways."
