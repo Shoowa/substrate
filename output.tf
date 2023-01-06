@@ -329,5 +329,5 @@ output "personnel_fqdn" {
 
 
 output "sg_bastion" {
-  value = module.bastion.bastion_host_security_group
+  value = module.bastion.*.bastion_host_security_group
 }
