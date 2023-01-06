@@ -37,9 +37,9 @@ data "aws_iam_policy_document" "who_can_access_bastion_bucket" {
     effect      = "Allow"
 
     resources   = [
-      module.bastion.*.bucket_arn,
-      "${module.bastion.*.bucket_arn}/*"
-     ]
+      module.bastion.0.bucket_arn,
+      "${module.bastion.0.bucket_arn}/*"
+    ]
 
      principals {
        type = "AWS"
@@ -50,6 +50,6 @@ data "aws_iam_policy_document" "who_can_access_bastion_bucket" {
 
 
 resource "aws_s3_bucket_policy" "access" {
-  bucket = module.bastion.*.bucket_name
+  bucket = module.bastion.0.bucket_name
   policy = data.aws_iam_policy_document.who_can_access_bastion_bucket.json
 }
