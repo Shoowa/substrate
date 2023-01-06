@@ -56,7 +56,7 @@ resource "aws_security_group" "postgres" {
     from_port         = local.postgres_port
     to_port           = local.postgres_port
     protocol          = "tcp"
-    security_groups   = [module.bastion.bastion_host_security_group.0]
+    security_groups   = [module.bastion.0.bastion_host_security_group.0]
   }
 
   lifecycle {
