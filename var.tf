@@ -69,3 +69,10 @@ variable "bastion_bucket_master" {
   type        = string
   description = "Name of existing IAM Role that will be allowed to read Bastion bucket holding SSH keys."
 }
+
+
+variable "bastion_enabled" {
+  type        = bool
+  description = "Toggle the creation of bastion hosts."
+  default     = false
+}
