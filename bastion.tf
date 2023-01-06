@@ -4,7 +4,7 @@ data "aws_key_pair" "bastion" {
 }
 
 module "bastion" {
-  for_each  = var.bastion_enabled ? toset([local.bastion]) : null
+  for_each  = var.bastion_enabled ? toset([local.bastion]) : {}
   source    = "git@github.com:Guimove/terraform-aws-bastion.git?ref=master"
 
   region                  = data.aws_region.current.name
